@@ -3,6 +3,9 @@ package byashad.qoutespicture.picture.quotes.picturequotes;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,18 +16,28 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class quotes extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,adapteritem.Onitemclicklistner {
 
 
 
     FirebaseDatabase database=FirebaseDatabase.getInstance();
     DatabaseReference ref=database.getReference();
     DatabaseReference urlofimage=ref.child("urls");
-    private StorageReference mStorageRef;
+    RecyclerView recyclerView;
+    adapteritem adapterrecylerview;
+    ArrayList<Getsampledata> imagelist;
+
 
 
 
@@ -35,6 +48,19 @@ public class quotes extends AppCompatActivity
         setContentView(R.layout.activity_quotes);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        imagelist=new ArrayList<>();
+        recyclerView=findViewById(R.id.recyclervieww);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//         adapterofitemyo=new adapterofitem(titlearray,getApplicationContext());
+//        adapterofitemyo.setonitemclicklistner(this);
+
+        adapterrecylerview=new adapteritem(imagelist,getApplicationContext());
+        adapterrecylerview.setonitemclicklistner(this);
+
+        recyclerView.setAdapter(adapterrecylerview);
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +85,98 @@ public class quotes extends AppCompatActivity
 
 
 
-        urlofimage.child("ashad").setValue("asda");
+
+//
+//        urlofimage.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//
+//
+//
+//
+//                for (DataSnapshot ds:dataSnapshot.getChildren())
+//                {
+//
+//
+//
+//                    Getsampledata value=ds.getValue(Getsampledata.class);
+//
+//                    String url=value.getImageurl();
+//                    String type=value.getType();
+//                    imagelist.add(new Getsampledata(url,type));
+//                    Log.i("imageusr","   isurl   "+imagelist);
+//                    adapterrecylerview.notifyDataSetChanged();
+//
+//
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                for (DataSnapshot ds:dataSnapshot.getChildren())
+//                {
+//
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//
+
+
+        urlofimage.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                for (DataSnapshot ds:dataSnapshot.getChildren())
+                {
+                    Getsampledata value=ds.getValue(Getsampledata.class);
+                    Log.i("imageusr","   value   "+value);
+
+                    String url=value.getImageurl();
+                    Log.i("imageusr","   url   "+url);
+
+                    String type=value.getType();
+                    Log.i("imageusr","   type   "+type);
+
+                    imagelist.add(new Getsampledata(url,type));
+                    Log.i("imageusr","   isurl   "+imagelist);
+                    adapterrecylerview.notifyDataSetChanged();
+
+
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
 
 
 
@@ -124,5 +241,10 @@ public class quotes extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onitemclick(int position) {
+
     }
 }
