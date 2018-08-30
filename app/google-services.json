@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "316130221028",
+    "firebase_url": "https://picturequotes-b3dc7.firebaseio.com",
+    "project_id": "picturequotes-b3dc7",
+    "storage_bucket": "picturequotes-b3dc7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:316130221028:android:d680ac42b2fe68df",
+        "android_client_info": {
+          "package_name": "byashad.qoutespicture.picture.quotes.picturequotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "316130221028-tf6jcqp1fglv4otar2rsjf7pn97u51ov.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "byashad.qoutespicture.picture.quotes.picturequotes",
+            "certificate_hash": "260d75f56547032992b6c4114eec02c8728610d4"
+          }
+        },
+        {
+          "client_id": "316130221028-gtus6disov89lfsuptau6ks703rkd8k0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxE_alIh-xhUpQDxOQNGOQ3KxCmmrk5uY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "316130221028-gtus6disov89lfsuptau6ks703rkd8k0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
