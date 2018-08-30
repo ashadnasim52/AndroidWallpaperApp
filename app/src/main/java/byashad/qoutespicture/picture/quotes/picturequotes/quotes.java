@@ -3,8 +3,10 @@ package byashad.qoutespicture.picture.quotes.picturequotes;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -15,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -36,7 +39,7 @@ public class quotes extends AppCompatActivity
     DatabaseReference urlofimage=ref.child("urls");
     RecyclerView recyclerView;
     adapteritem adapterrecylerview;
-    ArrayList<Getsampledata> imagelist;
+    ArrayList<String> imagelist;
 
 
 
@@ -51,7 +54,8 @@ public class quotes extends AppCompatActivity
 
         imagelist=new ArrayList<>();
         recyclerView=findViewById(R.id.recyclervieww);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,GridLayoutManager.VERTICAL));
 //         adapterofitemyo=new adapterofitem(titlearray,getApplicationContext());
 //        adapterofitemyo.setonitemclicklistner(this);
 
@@ -158,7 +162,7 @@ public class quotes extends AppCompatActivity
                     String type=value.getType();
                     Log.i("imageusr","   type   "+type);
 
-                    imagelist.add(new Getsampledata(url,type));
+                    imagelist.add(url);
                     Log.i("imageusr","   isurl   "+imagelist);
                     adapterrecylerview.notifyDataSetChanged();
 
@@ -245,6 +249,7 @@ public class quotes extends AppCompatActivity
 
     @Override
     public void onitemclick(int position) {
+        Toast.makeText(getApplicationContext(), "Tapped on "+position, Toast.LENGTH_SHORT).show();
 
     }
 }
