@@ -20,7 +20,7 @@ public class Splash extends AppCompatActivity {
                 finish();
 
             }
-        },1000);
+        },100);
         //todo changet t
         // o 2000
     }

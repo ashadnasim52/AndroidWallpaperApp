@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="byashad.qoutespicture.picture.quotes.picturequotes">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,7 +21,11 @@
         <activity
             android:name=".quotes"
             android:label="@string/title_activity_quotes"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".QuotesWhatToDo"
+            android:label="@string/title_activity_quotes_what_to_do"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
