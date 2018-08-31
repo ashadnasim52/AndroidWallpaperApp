@@ -165,11 +165,11 @@ public class quotes extends AppCompatActivity
 
                     imagelist.add(url);
                     Log.i("imageusr","   isurl   "+imagelist);
-                    adapterrecylerview.notifyDataSetChanged();
 
 
 
                 }
+                adapterrecylerview.notifyDataSetChanged();
 
 
             }
@@ -252,7 +252,7 @@ public class quotes extends AppCompatActivity
     public void onitemclick(int position) {
         Toast.makeText(getApplicationContext(), "Tapped on "+position, Toast.LENGTH_SHORT).show();
 
-        Intent i=new Intent(getApplicationContext(),QuotesWhatToDo.class);
+        Intent i=new Intent(getApplicationContext(),QuotesWhatToDoTwo.class);
         i.putExtra("linkofimage",imagelist.get(position));
         startActivity(i);
     }
