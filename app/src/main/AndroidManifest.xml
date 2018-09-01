@@ -23,7 +23,7 @@
         <activity
             android:name=".quotes"
             android:label="@string/title_activity_quotes"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.ActionBar.Transparent"/>
         <activity
             android:name=".QuotesWhatToDoTwo"
             android:label="@string/title_activity_quotes"

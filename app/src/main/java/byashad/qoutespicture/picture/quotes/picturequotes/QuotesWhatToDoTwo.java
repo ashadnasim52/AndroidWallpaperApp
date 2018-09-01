@@ -35,14 +35,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class QuotesWhatToDoTwo extends AppCompatActivity implements adapteritemhorizontal.Onitemclicklistner {
+public class QuotesWhatToDoTwo extends AppCompatActivity  {
 
-    RecyclerView mrecyclerView;
-    adapteritemhorizontal madapter;
-    FirebaseDatabase fb=FirebaseDatabase.getInstance();
-    DatabaseReference db=fb.getReference();
-    DatabaseReference dburl=db.child("urls");
-    ArrayList<String> marraylist;
+
     ImageView downloadimage,shareimage,likeimage;
 
 
@@ -55,19 +50,12 @@ public class QuotesWhatToDoTwo extends AppCompatActivity implements adapteritemh
 
 
         qoutesshowhimalone=findViewById(R.id.qoutesshowhimalone);
-        mrecyclerView=findViewById(R.id.recyclerviewshown);
         downloadimage=findViewById(R.id.downlaodimage);
         shareimage=findViewById(R.id.shareimage);
         likeimage=findViewById(R.id.likeimage);
 
 
 
-
-        marraylist=new ArrayList<>();
-        mrecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,GridLayoutManager.HORIZONTAL));
-        madapter=new adapteritemhorizontal(marraylist,getApplicationContext());
-        madapter.setonitemclicklistner(this);
-        mrecyclerView.setAdapter(madapter);
 
 
         Intent i=getIntent();
@@ -99,25 +87,6 @@ public class QuotesWhatToDoTwo extends AppCompatActivity implements adapteritemh
 
 
 
-        dburl.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds:dataSnapshot.getChildren())
-
-                {
-                    Getsampledata getsampledata=ds.getValue(Getsampledata.class);
-                    String url=getsampledata.getImageurl();
-                    marraylist.add(url);
-
-                }
-                madapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
 
 
@@ -128,16 +97,6 @@ public class QuotesWhatToDoTwo extends AppCompatActivity implements adapteritemh
     }
 
 
-
-    @Override
-    public void onitemclick(int position) {
-        Toast.makeText(getApplicationContext(), "Tapped on "+position, Toast.LENGTH_SHORT).show();
-
-        Intent i=new Intent(getApplicationContext(),QuotesWhatToDoTwo.class);
-        i.putExtra("linkofimage",marraylist.get(position));
-        startActivity(i);
-        finish();
-    }
 
     private String saveImage(Bitmap image) {
         String savedImagePath = null;
