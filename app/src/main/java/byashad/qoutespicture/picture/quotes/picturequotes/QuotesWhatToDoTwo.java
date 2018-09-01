@@ -35,10 +35,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class QuotesWhatToDoTwo extends AppCompatActivity implements adapteritem.Onitemclicklistner {
+public class QuotesWhatToDoTwo extends AppCompatActivity implements adapteritemhorizontal.Onitemclicklistner {
 
     RecyclerView mrecyclerView;
-    adapteritem madapter;
+    adapteritemhorizontal madapter;
     FirebaseDatabase fb=FirebaseDatabase.getInstance();
     DatabaseReference db=fb.getReference();
     DatabaseReference dburl=db.child("urls");
@@ -64,8 +64,8 @@ public class QuotesWhatToDoTwo extends AppCompatActivity implements adapteritem.
 
 
         marraylist=new ArrayList<>();
-        mrecyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, GridLayoutManager.HORIZONTAL));
-        madapter=new adapteritem(marraylist,getApplicationContext());
+        mrecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,GridLayoutManager.HORIZONTAL));
+        madapter=new adapteritemhorizontal(marraylist,getApplicationContext());
         madapter.setonitemclicklistner(this);
         mrecyclerView.setAdapter(madapter);
 
