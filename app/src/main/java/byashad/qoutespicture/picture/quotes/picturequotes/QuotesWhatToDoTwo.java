@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class QuotesWhatToDoTwo extends AppCompatActivity  {
@@ -95,18 +96,81 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
                 .into(qoutesshowhimalone)
         ;
 
+//        urlofimage.getDatabase().getReference("type").orderByChild("url").equalTo(imagelink).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                urlofimage.getRef().child("PIN").setValue("30");
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
 
 
+//                .once("value", function(snapshot) {
+//            snapshot.forEach(function(user) {
+//                user.ref.child("PIN").set(30);
+//            });
+//        })
 
-        urlofimage.addChildEventListener(new ChildEventListener() {
+
+//        urlofimage.orderByChild("image").equalTo(imagelink).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+////                DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
+////            String key = nodeDataSnapshot.getKey(); // this key is `K1NRz9l5PU_0CFDtgXz`
+////            String path = "/" + dataSnapshot.getKey() + "/" + key;
+////            HashMap<String, Object> result = new HashMap<>();
+////            result.put("type", "COMPLETED");
+////            urlofimage.child(path).setValue(result);
+////
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+
+        urlofimage.orderByChild("imageurl").equalTo(imagelink).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.i("adededede","is "+dataSnapshot);
+
+
+
+
+//
+                DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
+            String key = nodeDataSnapshot.getKey(); // this key is `K1NRz9l5PU_0CFDtgXz`
+            String path = "/" + dataSnapshot.getKey() + "/" + key;
+            HashMap<String, Object> result = new HashMap<>();
+            DatabaseReference fbfb=FirebaseDatabase.getInstance().getReference("path");
+            result.put("type", "COMPLETED");
+//            urlofimage.child(path).setValue(result);
+
+            fbfb.setValue(result);
+//
+//                databaseReference.child(user.getUid()).setValue(/*YOUR OBJECT CLASS GOES HERE*/);
+
+
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
                     Log.d("User key", child.getKey());
                     Log.d("User ref", child.getRef().toString());
                     Log.d("User val", child.getValue().toString());
+
+                    Log.i("containornot","is "+child.getRef().equalTo(imagelink));
+
+
+
+
+
+
                 }
             }
 
