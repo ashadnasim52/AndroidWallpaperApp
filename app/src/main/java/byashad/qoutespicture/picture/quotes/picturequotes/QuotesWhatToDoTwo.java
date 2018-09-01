@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,6 +37,15 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class QuotesWhatToDoTwo extends AppCompatActivity  {
+
+
+
+    FirebaseDatabase fb=FirebaseDatabase.getInstance();
+    DatabaseReference db=fb.getReference();
+    DatabaseReference urlofimage=db.child("urls");
+
+
+
 
 
     ImageView downloadimage,shareimage,likeimage;
@@ -88,6 +98,41 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
 
 
 
+
+        urlofimage.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.i("adededede","is "+dataSnapshot);
+                for (DataSnapshot child: dataSnapshot.getChildren()) {
+                    Log.d("User key", child.getKey());
+                    Log.d("User ref", child.getRef().toString());
+                    Log.d("User val", child.getValue().toString());
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Log.i("adededede","is "+dataSnapshot);
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Log.i("adededede","is "+dataSnapshot);
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                Log.i("adededede","is "+dataSnapshot);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
 

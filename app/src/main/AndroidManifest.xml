@@ -23,11 +23,11 @@
         <activity
             android:name=".quotes"
             android:label="@string/title_activity_quotes"
-            android:theme="@style/AppTheme.ActionBar.Transparent"/>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".QuotesWhatToDoTwo"
             android:label="@string/title_activity_quotes"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/actionbar" />
     </application>
 
 </manifest>
