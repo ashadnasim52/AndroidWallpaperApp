@@ -16,6 +16,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +28,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,12 +51,13 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
 
 
 
-
-    ImageView downloadimage,shareimage,likeimage;
+    int likes;
+    ImageView downloadimage,shareimage;
+    TextView likeimage;
 
 
     ImageView qoutesshowhimalone;
-    String imagelink;
+    String imagelink,likeslist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +75,11 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
 
         Intent i=getIntent();
         imagelink=i.getStringExtra("linkofimage");
+        likeslist=i.getStringExtra("likeslist");
         Log.i("imagelinkisthat" ,"is "+imagelink);
+        likeimage.setText(likeslist);
+
+        likes = Integer.parseInt(likeslist);
 
         downloadimage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +94,102 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
                                 saveImage(resource);
                             }
                         });
+            }
+        });
+        likeimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                urlofimage.orderByChild("imageurl").equalTo(imagelink).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Log.i("adededede","is "+dataSnapshot);
+
+
+
+                        if (dataSnapshot.hasChild("likes")) {
+
+                            DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
+                            String key = nodeDataSnapshot.getKey(); // this key is `K1NRz9l5PU_0CFDtgXz`
+                            String path = "/" + dataSnapshot.getKey() + "/" + "likes";
+                            String needtoupdatelike=urlofimage.child(path).getKey();
+
+                            Object count = dataSnapshot.child(path).getValue();
+                            int updatedlike=likes+1;
+                            String updatedlikessinstring=Integer.toString(updatedlike);
+                            ////            urlofimage.child(path).setValue(result);
+                            Log.i("needtoupdatelike","is"+count);
+                            urlofimage.child(path).setValue(updatedlikessinstring);
+
+
+
+                            likeimage.setText(updatedlikessinstring);
+
+
+                            Log.i("typaaaaaae","iss "+path);
+
+                        } else {
+                        }
+
+
+
+////
+//                DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
+//            String key = nodeDataSnapshot.getKey(); // this key is `K1NRz9l5PU_0CFDtgXz`
+//            String path = "/" + dataSnapshot.getKey() + "/" + key;
+//            HashMap<String, Object> result = new HashMap<>();
+//            DatabaseReference fbfb=FirebaseDatabase.getInstance().getReference("path");
+//            Log.i("refffff","path is"+path);
+//            Log.i("refffff","databaseref is"+fbfb);
+//            Log.i("refffff","key is"+key);
+//
+//
+//            result.put("type", "COMPLETED");
+////            urlofimage.child(path).setValue(result);
+
+//            fbfb.setValue(result);
+//
+//                databaseReference.child(user.getUid()).setValue(/*YOUR OBJECT CLASS GOES HERE*/);
+
+//
+//                for (DataSnapshot child: dataSnapshot.getChildren()) {
+//                    Log.d("User key", child.getKey());
+//                    Log.d("User ref", child.getRef().toString());
+//                    Log.d("User val", child.getValue().toString());
+//
+//                    Log.i("containornot","is "+child.getRef().equalTo(imagelink));
+//                    child.getRef().setValue("0000");
+////           ref.child("myDb").child("awais@gmailcom").child("leftSpace").setValue("YourDateHere");
+//
+//
+//
+//
+//                }
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        Log.i("adededede","is "+dataSnapshot);
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        Log.i("adededede","is "+dataSnapshot);
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                        Log.i("adededede","is "+dataSnapshot);
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
         });
 
@@ -137,86 +241,6 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
 //            }
 //        });
 
-        urlofimage.orderByChild("imageurl").equalTo(imagelink).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.i("adededede","is "+dataSnapshot);
-
-
-                if (dataSnapshot.hasChild("type")) {
-
-                     DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
-                    String key = nodeDataSnapshot.getKey(); // this key is `K1NRz9l5PU_0CFDtgXz`
-                    String path = "/" + dataSnapshot.getKey() + "/" + "type";
-                    ////            urlofimage.child(path).setValue(result);
-                    urlofimage.child(path).setValue("whatajoke");
-
-
-
-
-                    Log.i("typaaaaaae","iss "+path);
-
-                } else {
-                }
-
-
-////
-//                DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
-//            String key = nodeDataSnapshot.getKey(); // this key is `K1NRz9l5PU_0CFDtgXz`
-//            String path = "/" + dataSnapshot.getKey() + "/" + key;
-//            HashMap<String, Object> result = new HashMap<>();
-//            DatabaseReference fbfb=FirebaseDatabase.getInstance().getReference("path");
-//            Log.i("refffff","path is"+path);
-//            Log.i("refffff","databaseref is"+fbfb);
-//            Log.i("refffff","key is"+key);
-//
-//
-//            result.put("type", "COMPLETED");
-////            urlofimage.child(path).setValue(result);
-
-//            fbfb.setValue(result);
-//
-//                databaseReference.child(user.getUid()).setValue(/*YOUR OBJECT CLASS GOES HERE*/);
-
-//
-//                for (DataSnapshot child: dataSnapshot.getChildren()) {
-//                    Log.d("User key", child.getKey());
-//                    Log.d("User ref", child.getRef().toString());
-//                    Log.d("User val", child.getValue().toString());
-//
-//                    Log.i("containornot","is "+child.getRef().equalTo(imagelink));
-//                    child.getRef().setValue("0000");
-////           ref.child("myDb").child("awais@gmailcom").child("leftSpace").setValue("YourDateHere");
-//
-//
-//
-//
-//                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Log.i("adededede","is "+dataSnapshot);
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Log.i("adededede","is "+dataSnapshot);
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                Log.i("adededede","is "+dataSnapshot);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
 
 

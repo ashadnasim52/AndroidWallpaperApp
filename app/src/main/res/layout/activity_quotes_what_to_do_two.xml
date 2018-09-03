@@ -37,7 +37,7 @@
             android:padding="4dp"
             android:src="@drawable/download" />
 
-        <ImageView
+        <TextView
             android:id="@+id/likeimage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,7 +45,14 @@
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:padding="4dp"
-            android:src="@drawable/love" />
+            android:text="O00000"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="22sp"
+            android:gravity="center"
+            android:fontFamily="sans-serif-smallcaps"
+            android:drawableLeft="@drawable/love"
+             />
     </LinearLayout>
 
     <android.support.constraint.ConstraintLayout

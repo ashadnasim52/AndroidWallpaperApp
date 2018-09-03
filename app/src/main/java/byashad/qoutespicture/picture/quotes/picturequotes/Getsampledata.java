@@ -4,6 +4,16 @@ public class Getsampledata {
     private String imageurl;
     private String type;
 
+    public String getLikes() {
+        return likes;
+    }
+
+    public void setLikes(String likes) {
+        this.likes = likes;
+    }
+
+    private String likes;
+
     public Getsampledata() {
     }
 

@@ -45,6 +45,7 @@ public class quotes extends AppCompatActivity
     RecyclerView recyclerView;
     adapteritem adapterrecylerview;
     ArrayList<String> imagelist;
+    ArrayList<String> likeslist;
 
 
 
@@ -59,6 +60,7 @@ public class quotes extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         imagelist=new ArrayList<>();
+        likeslist=new ArrayList<>();
         recyclerView=findViewById(R.id.recyclervieww);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,GridLayoutManager.VERTICAL));
@@ -166,9 +168,11 @@ public class quotes extends AppCompatActivity
                     Log.i("imageusr","   url   "+url);
 
                     String type=value.getType();
+                    String likes=value.getLikes();
                     Log.i("imageusr","   type   "+type);
 
                     imagelist.add(url);
+                    likeslist.add(likes);
                     Log.i("imageusr","   isurl   "+imagelist);
 
 
@@ -259,6 +263,7 @@ public class quotes extends AppCompatActivity
 
         Intent i=new Intent(getApplicationContext(),QuotesWhatToDoTwo.class);
         i.putExtra("linkofimage",imagelist.get(position));
+        i.putExtra("likeslist",likeslist.get(position));
         startActivity(i);
     }
 }

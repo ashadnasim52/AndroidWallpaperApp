@@ -78,6 +78,7 @@ public class adapteritem extends RecyclerView.Adapter<adapteritem.exampleviewhol
         Glide.with(mcontext)
                 .load(currentimageurl)
 
+                .crossFade().skipMemoryCache(true)
                 .into(holder.imagestaus);
 
 
