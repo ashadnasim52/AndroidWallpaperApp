@@ -143,35 +143,55 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
                 Log.i("adededede","is "+dataSnapshot);
 
 
+                if (dataSnapshot.hasChild("type")) {
+
+                     DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
+                    String key = nodeDataSnapshot.getKey(); // this key is `K1NRz9l5PU_0CFDtgXz`
+                    String path = "/" + dataSnapshot.getKey() + "/" + "type";
+                    ////            urlofimage.child(path).setValue(result);
+                    urlofimage.child(path).setValue("whatajoke");
 
 
+
+
+                    Log.i("typaaaaaae","iss "+path);
+
+                } else {
+                }
+
+
+////
+//                DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
+//            String key = nodeDataSnapshot.getKey(); // this key is `K1NRz9l5PU_0CFDtgXz`
+//            String path = "/" + dataSnapshot.getKey() + "/" + key;
+//            HashMap<String, Object> result = new HashMap<>();
+//            DatabaseReference fbfb=FirebaseDatabase.getInstance().getReference("path");
+//            Log.i("refffff","path is"+path);
+//            Log.i("refffff","databaseref is"+fbfb);
+//            Log.i("refffff","key is"+key);
 //
-                DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
-            String key = nodeDataSnapshot.getKey(); // this key is `K1NRz9l5PU_0CFDtgXz`
-            String path = "/" + dataSnapshot.getKey() + "/" + key;
-            HashMap<String, Object> result = new HashMap<>();
-            DatabaseReference fbfb=FirebaseDatabase.getInstance().getReference("path");
-            result.put("type", "COMPLETED");
-//            urlofimage.child(path).setValue(result);
+//
+//            result.put("type", "COMPLETED");
+////            urlofimage.child(path).setValue(result);
 
-            fbfb.setValue(result);
+//            fbfb.setValue(result);
 //
 //                databaseReference.child(user.getUid()).setValue(/*YOUR OBJECT CLASS GOES HERE*/);
 
-
-                for (DataSnapshot child: dataSnapshot.getChildren()) {
-                    Log.d("User key", child.getKey());
-                    Log.d("User ref", child.getRef().toString());
-                    Log.d("User val", child.getValue().toString());
-
-                    Log.i("containornot","is "+child.getRef().equalTo(imagelink));
-
-
-
-
-
-
-                }
+//
+//                for (DataSnapshot child: dataSnapshot.getChildren()) {
+//                    Log.d("User key", child.getKey());
+//                    Log.d("User ref", child.getRef().toString());
+//                    Log.d("User val", child.getValue().toString());
+//
+//                    Log.i("containornot","is "+child.getRef().equalTo(imagelink));
+//                    child.getRef().setValue("0000");
+////           ref.child("myDb").child("awais@gmailcom").child("leftSpace").setValue("YourDateHere");
+//
+//
+//
+//
+//                }
             }
 
             @Override
