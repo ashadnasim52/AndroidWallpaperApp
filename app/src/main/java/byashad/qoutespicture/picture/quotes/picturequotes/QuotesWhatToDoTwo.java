@@ -9,19 +9,23 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +37,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
@@ -48,7 +53,8 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
     DatabaseReference db=fb.getReference();
     DatabaseReference urlofimage=db.child("urls");
 
-
+    Bitmap image;
+    String path;
 
 
     int likes;
@@ -195,7 +201,9 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
 
         Glide.with(getApplicationContext())
 
-                .load(imagelink).placeholder(R.drawable.ic_launcher_background)
+                .load(imagelink).asBitmap().placeholder(R.drawable.ic_launcher_background)
+
+
 
                 .into(qoutesshowhimalone)
         ;
@@ -242,6 +250,40 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
 //        });
 
 
+        shareimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("quoteswahttodo","is tapped");
+                v.playSoundEffect(SoundEffectConstants.CLICK);
+
+
+                Glide.with(getApplicationContext())
+                        .load(imagelink)
+                        .asBitmap()
+                        .into(new SimpleTarget<Bitmap>(250,250) {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation)  {
+                                Log.i("quoteswahttodo","is onresoursereddy");
+
+                                Intent intent = new Intent(Intent.ACTION_SEND);
+                                intent.putExtra(Intent.EXTRA_TEXT, "Hey view/download this image");
+                                String path = MediaStore.Images.Media.insertImage(getContentResolver(), resource, "", null);
+                                Log.i("quoteswahttodo","is onresoursereddy"+path);
+
+                                Uri screenshotUri = Uri.parse(path);
+
+                                Log.i("quoteswahttodo","is onresoursereddy"+screenshotUri);
+
+                                intent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
+                                intent.setType("image/*");
+                                startActivity(Intent.createChooser(intent, "Share image via..."));
+                            }
+                        });
+
+
+
+            }
+        });
 
 
 
@@ -251,7 +293,8 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
 
 
 
-    private String saveImage(Bitmap image) {
+    private String saveImage(Bitmap image)
+    {
         String savedImagePath = null;
 
         String imageFileName = UUID.randomUUID()+ ".jpg";
