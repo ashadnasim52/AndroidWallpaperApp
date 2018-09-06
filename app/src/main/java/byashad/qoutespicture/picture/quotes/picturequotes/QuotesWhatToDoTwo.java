@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -32,6 +35,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONObject;
 
@@ -46,7 +50,10 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class QuotesWhatToDoTwo extends AppCompatActivity  {
+    MediaPlayer mediaPlayer;
 
+
+    AVLoadingIndicatorView downlaodprogress,shareprogress,likeprogress;
 
 
     FirebaseDatabase fb=FirebaseDatabase.getInstance();
@@ -74,6 +81,20 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
         downloadimage=findViewById(R.id.downlaodimage);
         shareimage=findViewById(R.id.shareimage);
         likeimage=findViewById(R.id.likeimage);
+        downlaodprogress=findViewById(R.id.progresssbarondownload);
+        shareprogress=findViewById(R.id.progressbaronshare);
+        likeprogress=findViewById(R.id.progressbarlike);
+
+
+        mediaPlayer=MediaPlayer.create(getApplicationContext(),R.raw.sound);
+
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mediaPlayer.release();
+            }
+        });
+
 
 
 
@@ -90,14 +111,30 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
         downloadimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               showprogressondownload();
+                try {
+                    if (mediaPlayer.isPlaying()) {
+                        mediaPlayer.stop();
+                        mediaPlayer.release();
+                        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.soundtwo);
+                    } mediaPlayer.start();
+                } catch(Exception e) { e.printStackTrace(); }
 
                 Glide.with(getApplicationContext())
                         .load(imagelink)
-                        .asBitmap()
+                        .asBitmap().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(new SimpleTarget<Bitmap>(1920,1920) {
                             @Override
                             public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation)  {
                                 saveImage(resource);
+                            }
+
+                            @Override
+                            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                                Toast.makeText(getApplicationContext(), "Something went wrong" , Toast.LENGTH_SHORT).show();
+
+                                hideprogressondownload();
+                                super.onLoadFailed(e, errorDrawable);
                             }
                         });
             }
@@ -105,12 +142,22 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
         likeimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                try {
+                    if (mediaPlayer.isPlaying()) {
+                        mediaPlayer.stop();
+                        mediaPlayer.release();
+                        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.sound);
+                    } mediaPlayer.start();
+                } catch(Exception e) { e.printStackTrace(); }
+
                 urlofimage.orderByChild("imageurl").equalTo(imagelink).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Log.i("adededede","is "+dataSnapshot);
 
 
+                        showprogressonlike();
 
                         if (dataSnapshot.hasChild("likes")) {
 
@@ -129,11 +176,13 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
 
 
                             likeimage.setText(updatedlikessinstring);
+                            hideprogressonlike();
 
 
                             Log.i("typaaaaaae","iss "+path);
 
                         } else {
+                            hideprogressonlike();
                         }
 
 
@@ -175,24 +224,109 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                         Log.i("adededede","is "+dataSnapshot);
+                        showprogressonlike();
+
+                        if (dataSnapshot.hasChild("likes")) {
+
+                            DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
+                            String key = nodeDataSnapshot.getKey(); // this key is `K1NRz9l5PU_0CFDtgXz`
+                            String path = "/" + dataSnapshot.getKey() + "/" + "likes";
+                            String needtoupdatelike=urlofimage.child(path).getKey();
+
+                            Object count = dataSnapshot.child(path).getValue();
+                            int updatedlike=likes+1;
+                            String updatedlikessinstring=Integer.toString(updatedlike);
+                            ////            urlofimage.child(path).setValue(result);
+                            Log.i("needtoupdatelike","is"+count);
+                            urlofimage.child(path).setValue(updatedlikessinstring);
+
+
+
+                            likeimage.setText(updatedlikessinstring);
+                            hideprogressonlike();
+
+
+                            Log.i("typaaaaaae","iss "+path);
+
+                        } else {
+                            hideprogressonlike();
+                        }
+
 
                     }
 
                     @Override
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
                         Log.i("adededede","is "+dataSnapshot);
+                        showprogressonlike();
+
+                        if (dataSnapshot.hasChild("likes")) {
+
+                            DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
+                            String key = nodeDataSnapshot.getKey(); // this key is `K1NRz9l5PU_0CFDtgXz`
+                            String path = "/" + dataSnapshot.getKey() + "/" + "likes";
+                            String needtoupdatelike=urlofimage.child(path).getKey();
+
+                            Object count = dataSnapshot.child(path).getValue();
+                            int updatedlike=likes+1;
+                            String updatedlikessinstring=Integer.toString(updatedlike);
+                            ////            urlofimage.child(path).setValue(result);
+                            Log.i("needtoupdatelike","is"+count);
+                            urlofimage.child(path).setValue(updatedlikessinstring);
+
+
+
+                            likeimage.setText(updatedlikessinstring);
+                            hideprogressonlike();
+
+
+                            Log.i("typaaaaaae","iss "+path);
+
+                        } else {
+                            hideprogressonlike();
+                        }
+
 
                     }
 
                     @Override
                     public void onChildMoved(DataSnapshot dataSnapshot, String s) {
                         Log.i("adededede","is "+dataSnapshot);
+                        showprogressonlike();
+
+                        if (dataSnapshot.hasChild("likes")) {
+
+                            DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
+                            String key = nodeDataSnapshot.getKey(); // this key is `K1NRz9l5PU_0CFDtgXz`
+                            String path = "/" + dataSnapshot.getKey() + "/" + "likes";
+                            String needtoupdatelike=urlofimage.child(path).getKey();
+
+                            Object count = dataSnapshot.child(path).getValue();
+                            int updatedlike=likes+1;
+                            String updatedlikessinstring=Integer.toString(updatedlike);
+                            ////            urlofimage.child(path).setValue(result);
+                            Log.i("needtoupdatelike","is"+count);
+                            urlofimage.child(path).setValue(updatedlikessinstring);
+
+
+
+                            likeimage.setText(updatedlikessinstring);
+                            hideprogressonlike();
+
+
+                            Log.i("typaaaaaae","iss "+path);
+
+                        } else {
+                            hideprogressonlike();
+                        }
+
 
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
+                        Toast.makeText(QuotesWhatToDoTwo.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -202,6 +336,19 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
         Glide.with(getApplicationContext())
 
                 .load(imagelink).asBitmap().placeholder(R.drawable.ic_launcher_background)
+                .listener(new RequestListener<String, Bitmap>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
+                        Toast.makeText(getApplicationContext(), "Something went wrong" , Toast.LENGTH_SHORT).show();
+
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        return false;
+                    }
+                })
 
 
 
@@ -251,15 +398,27 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
 
 
         shareimage.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                showprogressonshare();
+                try {
+                    if (mediaPlayer.isPlaying()) {
+                        mediaPlayer.stop();
+                        mediaPlayer.release();
+                        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.sound);
+                    } mediaPlayer.start();
+                } catch(Exception e) { e.printStackTrace(); }
+
+
+
                 Log.i("quoteswahttodo","is tapped");
-                v.playSoundEffect(SoundEffectConstants.CLICK);
 
 
                 Glide.with(getApplicationContext())
                         .load(imagelink)
-                        .asBitmap()
+                        .asBitmap().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)
+
                         .into(new SimpleTarget<Bitmap>(250,250) {
                             @Override
                             public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation)  {
@@ -276,7 +435,23 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
 
                                 intent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
                                 intent.setType("image/*");
+                                hideprogressonshare();
                                 startActivity(Intent.createChooser(intent, "Share image via..."));
+                            }
+
+                            @Override
+                            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                                Toast.makeText(getApplicationContext(), "Something went wrong" , Toast.LENGTH_SHORT).show();
+                                hideprogressonshare();
+
+                                super.onLoadFailed(e, errorDrawable);
+                            }
+
+                            @Override
+                            public void onLoadStarted(Drawable placeholder) {
+                                Toast.makeText(getApplicationContext(), "Starting" , Toast.LENGTH_SHORT).show();
+
+                                super.onLoadStarted(placeholder);
                             }
                         });
 
@@ -318,6 +493,8 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
 
             // Add the image to the system gallery
             galleryAddPic(savedImagePath);
+
+            hideprogressondownload();
             Toast.makeText(getApplicationContext(), "IMAGE SAVED", Toast.LENGTH_LONG).show();
         }
         return savedImagePath;
@@ -329,6 +506,46 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
         sendBroadcast(mediaScanIntent);
+    }
+
+
+
+    public void showprogressondownload()
+    {
+        downlaodprogress.show();
+        downloadimage.setVisibility(View.INVISIBLE);
+    }
+
+    public void hideprogressondownload()
+    {
+        downlaodprogress.hide();
+        downloadimage.setVisibility(View.VISIBLE);
+    }
+
+
+    public void showprogressonshare()
+    {
+        shareprogress.show();
+        shareimage.setVisibility(View.INVISIBLE);
+    }
+
+    public void hideprogressonshare()
+    {
+        shareprogress.hide();
+        shareimage.setVisibility(View.VISIBLE);
+    }
+
+
+    public void showprogressonlike()
+    {
+        likeprogress.show();
+        likeimage.setVisibility(View.INVISIBLE);
+    }
+
+    public void hideprogressonlike()
+    {
+        likeprogress.hide();
+        likeimage.setVisibility(View.VISIBLE);
     }
 
 

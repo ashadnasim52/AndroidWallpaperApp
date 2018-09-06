@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
@@ -76,7 +77,8 @@ public class adapteritem extends RecyclerView.Adapter<adapteritem.exampleviewhol
 
 
         Glide.with(mcontext)
-                .load(currentimageurl)
+                .load(currentimageurl).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)
+
 
                 .crossFade().skipMemoryCache(true)
                 .into(holder.imagestaus);
