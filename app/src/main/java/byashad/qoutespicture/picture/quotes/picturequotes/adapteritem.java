@@ -1,9 +1,16 @@
 package byashad.qoutespicture.picture.quotes.picturequotes;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 import android.renderscript.Sampler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.transition.Transition;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +21,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.SizeReadyCallback;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class adapteritem extends RecyclerView.Adapter<adapteritem.exampleviewholder> {
     private ArrayList<String> imageurl;
@@ -23,6 +37,19 @@ public class adapteritem extends RecyclerView.Adapter<adapteritem.exampleviewhol
 
     private Onitemclicklistner mlistner;
 
+
+    private ColorDrawable[] vibrantLightColorList =
+            {
+                    new ColorDrawable(Color.parseColor("#9ACCCD")), new ColorDrawable(Color.parseColor("#8FD8A0")),
+                    new ColorDrawable(Color.parseColor("#CBD890")), new ColorDrawable(Color.parseColor("#DACC8F")),
+                    new ColorDrawable(Color.parseColor("#D9A790")), new ColorDrawable(Color.parseColor("#D18FD9")),
+                    new ColorDrawable(Color.parseColor("#FF6772")), new ColorDrawable(Color.parseColor("#DDFB5C"))
+            };
+
+    public ColorDrawable getRandomDrawbleColor() {
+        int idx = new Random().nextInt(vibrantLightColorList.length);
+        return vibrantLightColorList[idx];
+    }
 
     public interface Onitemclicklistner
     {
@@ -57,7 +84,7 @@ public class adapteritem extends RecyclerView.Adapter<adapteritem.exampleviewhol
 
 
     @Override
-    public void onBindViewHolder(@NonNull exampleviewholder holder, int position) {
+    public void onBindViewHolder(@NonNull final exampleviewholder holder, int position) {
 
         //  exampleitem currentitem=arrayList.get(position);
         //        String imageurl=currentitem.getImageurl();
@@ -76,12 +103,36 @@ public class adapteritem extends RecyclerView.Adapter<adapteritem.exampleviewhol
 
 
 
+
         Glide.with(mcontext)
-                .load(currentimageurl).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)
+                .load(currentimageurl).asBitmap()
+//                .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
+
+                .listener(new RequestListener<String, Bitmap>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
+
+                        int w = resource.getWidth();
+                        int h = resource.getHeight();
+
+                        holder.imagestaus.setMaxHeight(h);
+                        holder.imagestaus.setMaxWidth(w);
+                        Log.i("lookatthis","height"+h);
+                        Log.i("lookatthis","weidth"+w);
+                        holder.imagestaus.setImageBitmap(resource);
+                        return false;
+                    }
+                })
+                .placeholder(getRandomDrawbleColor())
 
 
-                .crossFade().skipMemoryCache(true)
                 .into(holder.imagestaus);
+
 
 
 //        Picasso.with(mcontext).load(currentimageurl).fit()
@@ -98,6 +149,8 @@ public class adapteritem extends RecyclerView.Adapter<adapteritem.exampleviewhol
     public int getItemCount() {
         return imageurl.size();
     }
+
+
 
     public class exampleviewholder extends  RecyclerView.ViewHolder
     {

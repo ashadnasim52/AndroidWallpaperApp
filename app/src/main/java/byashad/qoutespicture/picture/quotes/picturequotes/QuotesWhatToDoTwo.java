@@ -51,6 +51,8 @@ import java.util.UUID;
 
 public class QuotesWhatToDoTwo extends AppCompatActivity  {
     MediaPlayer mediaPlayer;
+    MediaPlayer mediaPlayer1;
+    MediaPlayer mediaPlayer2;
 
 
     AVLoadingIndicatorView downlaodprogress,shareprogress,likeprogress;
@@ -87,16 +89,8 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
 
 
         mediaPlayer=MediaPlayer.create(getApplicationContext(),R.raw.sound);
-
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                mediaPlayer.release();
-            }
-        });
-
-
-
+        mediaPlayer1=MediaPlayer.create(getApplicationContext(),R.raw.soundtwo);
+        mediaPlayer2=MediaPlayer.create(getApplicationContext(),R.raw.soundthree);
 
 
 
@@ -116,8 +110,11 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
                     if (mediaPlayer.isPlaying()) {
                         mediaPlayer.stop();
                         mediaPlayer.release();
-                        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.soundtwo);
-                    } mediaPlayer.start();
+                        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.sound);
+                    }
+                    else
+                        mediaPlayer.start();
+                    mediaPlayer.start();
                 } catch(Exception e) { e.printStackTrace(); }
 
                 Glide.with(getApplicationContext())
@@ -144,11 +141,11 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
             public void onClick(View v) {
 
                 try {
-                    if (mediaPlayer.isPlaying()) {
-                        mediaPlayer.stop();
-                        mediaPlayer.release();
-                        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.sound);
-                    } mediaPlayer.start();
+                    if (mediaPlayer1.isPlaying()) {
+                        mediaPlayer1.stop();
+                        mediaPlayer1.release();
+                        mediaPlayer1 = MediaPlayer.create(getApplicationContext(), R.raw.soundtwo);
+                    } mediaPlayer1.start();
                 } catch(Exception e) { e.printStackTrace(); }
 
                 urlofimage.orderByChild("imageurl").equalTo(imagelink).addChildEventListener(new ChildEventListener() {
@@ -403,11 +400,11 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
             public void onClick(View v) {
                 showprogressonshare();
                 try {
-                    if (mediaPlayer.isPlaying()) {
-                        mediaPlayer.stop();
-                        mediaPlayer.release();
-                        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.sound);
-                    } mediaPlayer.start();
+                    if (mediaPlayer2.isPlaying()) {
+                        mediaPlayer2.stop();
+                        mediaPlayer2.release();
+                        mediaPlayer2 = MediaPlayer.create(getApplicationContext(), R.raw.soundthree);
+                    } mediaPlayer2.start();
                 } catch(Exception e) { e.printStackTrace(); }
 
 
@@ -513,40 +510,50 @@ public class QuotesWhatToDoTwo extends AppCompatActivity  {
     public void showprogressondownload()
     {
         downlaodprogress.show();
-        downloadimage.setVisibility(View.INVISIBLE);
+        downloadimage.setVisibility(View.GONE);
+        shareimage.setVisibility(View.GONE);
+        likeimage.setVisibility(View.GONE);
     }
 
     public void hideprogressondownload()
     {
         downlaodprogress.hide();
+        downlaodprogress.setVisibility(View.GONE);
         downloadimage.setVisibility(View.VISIBLE);
+        shareimage.setVisibility(View.VISIBLE);
+        likeimage.setVisibility(View.VISIBLE);
     }
 
 
     public void showprogressonshare()
     {
         shareprogress.show();
-        shareimage.setVisibility(View.INVISIBLE);
-    }
+        downloadimage.setVisibility(View.GONE);
+        shareimage.setVisibility(View.GONE);
+        likeimage.setVisibility(View.GONE);    }
 
     public void hideprogressonshare()
     {
         shareprogress.hide();
+        shareprogress.setVisibility(View.GONE);
+        downloadimage.setVisibility(View.VISIBLE);
         shareimage.setVisibility(View.VISIBLE);
-    }
+        likeimage.setVisibility(View.VISIBLE);    }
 
 
     public void showprogressonlike()
     {
         likeprogress.show();
-        likeimage.setVisibility(View.INVISIBLE);
-    }
+        downloadimage.setVisibility(View.GONE);
+        shareimage.setVisibility(View.GONE);
+        likeimage.setVisibility(View.GONE);    }
 
     public void hideprogressonlike()
     {
         likeprogress.hide();
-        likeimage.setVisibility(View.VISIBLE);
-    }
+        downloadimage.setVisibility(View.VISIBLE);
+        shareimage.setVisibility(View.VISIBLE);
+        likeimage.setVisibility(View.VISIBLE);    }
 
 
 

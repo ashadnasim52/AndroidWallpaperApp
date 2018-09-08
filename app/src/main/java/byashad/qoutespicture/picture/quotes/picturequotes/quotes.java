@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -30,6 +31,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +48,8 @@ public class quotes extends AppCompatActivity
     adapteritem adapterrecylerview;
     ArrayList<String> imagelist;
     ArrayList<String> likeslist;
+    AVLoadingIndicatorView progressbara;
+
 
 
 
@@ -62,16 +66,29 @@ public class quotes extends AppCompatActivity
         imagelist=new ArrayList<>();
         likeslist=new ArrayList<>();
         recyclerView=findViewById(R.id.recyclervieww);
+        progressbara=findViewById(R.id.progressbara);;
+        recyclerView.setVisibility(View.GONE);
+        progressbara.setVisibility(View.VISIBLE);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,GridLayoutManager.VERTICAL));
+        StaggeredGridLayoutManager sGrid = new StaggeredGridLayoutManager(2, OrientationHelper.VERTICAL);
 //         adapterofitemyo=new adapterofitem(titlearray,getApplicationContext());
 //        adapterofitemyo.setonitemclicklistner(this);
+        sGrid.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        recyclerView.setLayoutManager(sGrid);
 
         adapterrecylerview=new adapteritem(imagelist,getApplicationContext());
         adapterrecylerview.setonitemclicklistner(this);
-
         recyclerView.setAdapter(adapterrecylerview);
 
+        recyclerView.setVisibility(View.VISIBLE);
+        progressbara.setVisibility(View.GONE);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                ((StaggeredGridLayoutManager)recyclerView.getLayoutManager()).invalidateSpanAssignments();
+            }
+        });
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

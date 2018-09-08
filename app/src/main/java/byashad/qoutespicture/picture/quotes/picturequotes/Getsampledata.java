@@ -11,7 +11,7 @@ public class Getsampledata {
     public void setLikes(String likes) {
         this.likes = likes;
     }
-
+//     .transform(new CropCircleTransform(context))
     private String likes;
 
     public Getsampledata() {

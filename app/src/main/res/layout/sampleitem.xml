@@ -16,7 +16,7 @@
             android:id="@+id/imageshow"
             android:src="@mipmap/ic_launcher"
             android:layout_width="match_parent"
-
+            android:scaleType="fitXY"
             android:adjustViewBounds="true"
             android:layout_height="wrap_content" />
 
