@@ -40,10 +40,22 @@ public class adapteritem extends RecyclerView.Adapter<adapteritem.exampleviewhol
 
     private ColorDrawable[] vibrantLightColorList =
             {
-                    new ColorDrawable(Color.parseColor("#9ACCCD")), new ColorDrawable(Color.parseColor("#8FD8A0")),
-                    new ColorDrawable(Color.parseColor("#CBD890")), new ColorDrawable(Color.parseColor("#DACC8F")),
-                    new ColorDrawable(Color.parseColor("#D9A790")), new ColorDrawable(Color.parseColor("#D18FD9")),
-                    new ColorDrawable(Color.parseColor("#FF6772")), new ColorDrawable(Color.parseColor("#DDFB5C"))
+                    new ColorDrawable(Color.parseColor("#9ACCCD")),
+                    new ColorDrawable(Color.parseColor("#8FD8A0")),
+                    new ColorDrawable(Color.parseColor("#CBD890")),
+                    new ColorDrawable(Color.parseColor("#DACC8F")),
+                    new ColorDrawable(Color.parseColor("#D9A790")),
+                    new ColorDrawable(Color.parseColor("#D18FD9")),
+                    new ColorDrawable(Color.parseColor("#35013f")),
+                    new ColorDrawable(Color.parseColor("#b643cd")),
+                    new ColorDrawable(Color.parseColor("#ff5da2")),
+                    new ColorDrawable(Color.parseColor("#99ddcc")),
+                    new ColorDrawable(Color.parseColor("#2c3e50")),
+                    new ColorDrawable(Color.parseColor("#D2D7D3")),
+                    new ColorDrawable(Color.parseColor("#f1c40f")),
+                    new ColorDrawable(Color.parseColor("#d35400")),
+                    new ColorDrawable(Color.parseColor("#FF6772")),
+                    new ColorDrawable(Color.parseColor("#DDFB5C"))
             };
 
     public ColorDrawable getRandomDrawbleColor() {

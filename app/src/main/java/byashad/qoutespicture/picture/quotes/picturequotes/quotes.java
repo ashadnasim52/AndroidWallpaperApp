@@ -278,7 +278,7 @@ public class quotes extends AppCompatActivity
     public void onitemclick(int position) {
         Toast.makeText(getApplicationContext(), "Tapped on "+position, Toast.LENGTH_SHORT).show();
 
-        Intent i=new Intent(getApplicationContext(),QuotesWhatToDoTwo.class);
+        Intent i=new Intent(getApplicationContext(),QuotesWhatToDotwo.class);
         i.putExtra("linkofimage",imagelist.get(position));
         i.putExtra("likeslist",likeslist.get(position));
         startActivity(i);
