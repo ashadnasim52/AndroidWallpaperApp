@@ -15,3 +15,6 @@ Their is another app from which you can directly send your wallpaper to the  fir
 3 Staggred Grid view
 
 Enjoy
+
+
+add your own setting.json or connect this app to firebase
